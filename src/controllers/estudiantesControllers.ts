@@ -1,50 +1,67 @@
 import { Request, Response } from "express";
+import { Estudiantes } from "../models/estudiantesModels";
+import { AppDataSource } from "../db/conexion";
 
 
+const estudiante  = AppDataSource.getRepository(Estudiantes)
 class EstudiantesControllers {
     constructor(){}
 
-    consultar(req: Request, res: Response){
+    async consultar(req: Request, res: Response){
         try {
-            res.send("Consultar");
+            const data = await estudiante.find()
+            res.status(200).json(data);
         } catch (error) {
             if (error instanceof Error) {
                 res.status(500).send(error.message)
             }
         }
     }
-    consultarDetalles(req: Request, res: Response){
+    async consultarDetalles(req: Request, res: Response){
         const {id} = req.params;
         try {
-            res.send("Consultar detalles");
+            const registro = await estudiante.findOneBy({id: Number(id)})
+            res.status(200).json(registro)
         } catch (error) {
             if (error instanceof Error) {
                 res.status(500).send(error.message)
             }
         }
     }
-    ingresar(req: Request, res: Response){
+    async ingresar(req: Request, res: Response){
         try {
-            res.send("Ingresar");
-        } catch (error) {
-            if (error instanceof Error) {
-                res.status(500).send(error.message)
-            }
+            const registro = await estudiante.save(req.body);
+            res.status(201).json(registro);
+        } catch (err) {
+            if (err instanceof Error)
+                res.status(500).send(err.message);
         }
     }
-    actualizar(req: Request, res: Response){
+    async actualizar(req: Request, res: Response){
         const {id} = req.params
         try {
-            res.send("Actualizar");
+            const registro = await estudiante.findOneBy({id: Number(id)})
+            if (!registro) {
+                throw new Error('Estudiante no encontrado')
+            }
+            await estudiante.update({id: Number(id)}, req.body);
+            const registroActualizado = await estudiante.findOneBy({id: Number(id)});
+            res.status(200).json(registroActualizado);
         } catch (error) {
             if (error instanceof Error) {
                 res.status(500).send(error.message)
             }
         }
     }
-    eliminar(req: Request, res: Response){
+    async eliminar(req: Request, res: Response){
+        const {id} = req.params
         try {
-            res.send("Eliminar");
+            const registro = await estudiante.findOneBy({id: Number(id)})
+            if (!registro) {
+                throw new Error('Estudiante no encontrado')
+            }
+            await estudiante.delete({id: Number(id)});
+            res.status(204);
         } catch (error) {
             if (error instanceof Error) {
                 res.status(500).send(error.message)

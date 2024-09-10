@@ -4,19 +4,19 @@ import { Column, CreateDateColumn, Entity, PrimaryGeneratedColumn, UpdateDateCol
 export class Estudiantes {
 
     @PrimaryGeneratedColumn()
-    id : Number;
+    id : number;
 
     @Column()
-    dni: String;
+    dni: string;
 
     @Column()
-    nombre: String;
+    nombre: string;
 
     @Column()
-    apellido: String;
+    apellido: string;
 
     @Column()
-    email: String;
+    email: string;
 
     @CreateDateColumn()
     createdAt: Date;

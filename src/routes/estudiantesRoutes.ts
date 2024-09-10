@@ -6,10 +6,6 @@ router.get('/', estudiantesControllers.consultar);
 
 router.post('/', estudiantesControllers.ingresar);
 
-router.put('/', estudiantesControllers.actualizar);
-
-router.delete('/', estudiantesControllers.eliminar);
-
 router.route('/:id')
     .get(estudiantesControllers.consultarDetalles)
     .put(estudiantesControllers.actualizar)

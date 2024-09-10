@@ -12,5 +12,5 @@ export const AppDataSource = new DataSource({
     database: "tsexpress",
     logging: true,
     entities: [Cursos, Estudiantes, Profesores],
-    synchronize: true
+    synchronize: false
 })
